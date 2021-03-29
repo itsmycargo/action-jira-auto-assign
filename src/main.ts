@@ -41,6 +41,7 @@ async function run() {
     // github octokit client with given token
     const octokit = github.getOctokit(GITHUB_TOKEN);
 
+    console.log(`PullRequest ${JSON.stringify(pullRequest)}`);
     const username = pullRequest.user?.login;
     if (!username) throw new Error("Cannot find PR owner");
 
