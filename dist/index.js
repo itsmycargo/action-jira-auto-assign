@@ -9672,8 +9672,7 @@ function run() {
             }
             // github octokit client with given token
             const octokit = github.getOctokit(GITHUB_TOKEN);
-            console.log(`PullRequest ${JSON.stringify(pullRequest)}`);
-            const username = (_a = pullRequest.user) === null || _a === void 0 ? void 0 : _a.login;
+            const username = (_a = pullRequest.assignee) === null || _a === void 0 ? void 0 : _a.login;
             if (!username)
                 throw new Error("Cannot find PR owner");
             const { data: user } = yield octokit.users.getByUsername({
@@ -9689,7 +9688,8 @@ function run() {
             if (!(jiraUser === null || jiraUser === void 0 ? void 0 : jiraUser.displayName))
                 throw new Error(`JIRA account not found for ${user.name}`);
             const { assignee } = yield jira.getTicketDetails(ISSUE_KEY);
-            if ((assignee === null || assignee === void 0 ? void 0 : assignee.name) === jiraUser.displayName) {
+            // if (assignee?.name === jiraUser.displayName) {
+            if (assignee) {
                 console.log(`${ISSUE_KEY} is already assigned to ${assignee.name}`);
                 return;
             }

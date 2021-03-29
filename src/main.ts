@@ -41,8 +41,7 @@ async function run() {
     // github octokit client with given token
     const octokit = github.getOctokit(GITHUB_TOKEN);
 
-    console.log(`PullRequest ${JSON.stringify(pullRequest)}`);
-    const username = pullRequest.user?.login;
+    const username = pullRequest.assignee?.login;
     if (!username) throw new Error("Cannot find PR owner");
 
     const { data: user } = await octokit.users.getByUsername({
@@ -61,7 +60,8 @@ async function run() {
       throw new Error(`JIRA account not found for ${user.name}`);
 
     const { assignee } = await jira.getTicketDetails(ISSUE_KEY);
-    if (assignee?.name === jiraUser.displayName) {
+    // if (assignee?.name === jiraUser.displayName) {
+    if (assignee) {
       console.log(`${ISSUE_KEY} is already assigned to ${assignee.name}`);
       return;
     }
